@@ -1,76 +1,157 @@
-# iconicpink-blue
+<p align="center">
+  <img src="docs/banner.svg" alt="iconicpink-blue" width="100%">
+</p>
 
-Teclas de **PC (teclado e mouse)** para o lugar dos ícones de controle de
-Xbox na interface do GTA VI. Desenhos próprios, vetoriais, no estilo da
-interface do jogo: forma branca, detalhes pretos, letras na fonte da própria
-interface.
+<p align="center"><b>English</b> · <a href="README.pt-BR.md">Português (BR)</a></p>
 
-> **Nada do jogo está neste repositório.** Para gerar os ícones você precisa
-> da **sua cópia** do jogo: o `preparar.py` tira dela a fonte da interface e os
-> ícones originais (para comparar). Testado com a versão de Xbox Series 1.0.2.1.
+<p align="center">
+  <img src="docs/demo.png" alt="PC keys in the game's prompt layouts, on a clean background" width="100%">
+</p>
 
-## Requisitos
+## What it is
 
-- Python 3.9 ou mais novo (só a biblioteca padrão).
-- Opcional, só no macOS: Swift (`swiftc`) para o teste de tamanho e a folha
-  de comparação.
+GTA VI shows controller buttons (A, B, X, Y, LB, RT, sticks, D-pad) in prompts
+such as "Press **Y** to enter". This project redraws **only the artwork** of
+those icons with the matching PC key. The game logic that decides, animates and
+tints the prompts stays exactly the same.
 
-## Uso
+- **38 icons**, one for each `Main_Button_N` symbol.
+- **Same style as the UI**: white shape, black details, and lettering in the
+  interface's own typeface (`gta_art_deco_bold`).
+- **Same size standard** as the originals (64-unit space), checked by a test.
+- **No circles**: the circle is console language.
 
-```sh
-# 1. Extrair da sua cópia (só lê o .rpf). Cria a pasta jogo/
-python3 ferramentas/preparar.py "/caminho/para/data.rpf"
+## The prompts in motion
 
-# 2. Gerar os 38 ícones de PC em SVG
-python3 ferramentas/teclas_pc.py saida/svg
+| Press | Hold | Mash |
+|:-:|:-:|:-:|
+| <img src="docs/gifs/press.gif" width="100%"> | <img src="docs/gifs/hold.gif" width="100%"> | <img src="docs/gifs/mash.gif" width="100%"> |
+| **Quick-time event** | **Pressed / holding** | |
+| <img src="docs/gifs/qte.gif" width="100%"> | <img src="docs/gifs/holding.gif" width="100%"> | |
 
-# 3. Conferir com os aprovados (tem de dar 38 OK)
-cd saida/svg && shasum -a 256 -c ../../aprovados/teclas_pc.sha256 && cd ../..
+Values read from the game's own prompt code: a pressed icon shrinks to 0.8 and
+changes colour over 6 frames, the completion glow is 50%, and the QTE uses a
+pink arc on a 15% track.
 
-# 4. (macOS) Teste de tamanho: tem de dar "38 ícones, 0 com falha"
-swiftc -O ferramentas/medir.swift -o ferramentas/medir
-python3 ferramentas/teste_padrao.py saida/svg
+## All 38 icons
 
-# 5. (macOS) Folha Xbox x PC na mesma escala
-swiftc -O ferramentas/folha.swift -o ferramentas/folha
-args=(); for f in saida/svg/botao_*.svg; do n=$(basename "$f"); args+=("jogo/xbox64/$n" "$f"); done
-FOLHA_ESCALA_COMUM=1 ferramentas/folha saida/folha_comparacao.png 8 128 "${args[@]}"
+<p align="center">
+  <img src="docs/sheet.png" alt="The 38 PC icons" width="100%">
+</p>
 
-# 6. Demo dos prompts (apertar, segurar, repetido, girar, QTE, apertado...)
-python3 ferramentas/demo_animacoes.py jogo/xbox64 saida/svg saida/demo.html
+> [!IMPORTANT]
+> **No game files are in this repository.** To generate the icons you need
+> **your own copy** of the game: `tools/preparar.py` extracts the interface font
+> and the original icons (for comparison) from it. Tested with the Xbox Series
+> build 1.0.2.1. The images above use the game's typeface for the key letters,
+> as rendered pictures only.
+
+## How it works
+
+```mermaid
+flowchart LR
+  A["data.rpf<br/>(your copy)"] -->|preparar.py| B["game/<br/>font + original icons"]
+  B -->|teclas_pc.py| C["output/svg<br/>38 PC icons"]
+  C -->|teste_padrao.py| D["38 OK"]
+  C -->|folha| E["Xbox × PC sheet"]
+  C -->|demo_animacoes.py| F["prompt demo"]
 ```
 
-A demo é um HTML que roda sozinho, sem internet.
+## Requirements
 
-## Mapeamento (símbolo `Main_Button_N` → PC)
+| | |
+|---|---|
+| **Python 3.9+** | standard library only; generates the icons on any OS |
+| **Swift** (optional, macOS) | size test, comparison sheet and README images |
+| **ffmpeg** (optional) | README GIFs |
 
-| N | Controle | PC |
-|---|---|---|
-| 30 | A | Shift |
-| 31 | B | R |
-| 32 | X | Espaço |
-| 33 | Y | F |
-| 34 | LB | Tab |
-| 35 | LT | botão direito do mouse |
-| 36 | RB | Q |
-| 37 | RT | botão esquerdo do mouse |
-| 38 | Menu | Esc |
-| 39 | View | V |
-| 12-15 | analógico esquerdo (uma direção) | W, S, A, D |
-| 16 | L3 | Ctrl |
-| 17-20, 58 | analógico esquerdo (neutro, pares, girar) | bloco WASD |
-| 21-24, 27, 28 | analógico direito (direções) | mouse com setas |
-| 25 | R3 | C |
-| 26 | analógico direito (neutro) | mouse |
-| 29, 59 | girar o analógico direito | mover o mouse (4 setas) |
-| 4-7 | direcional (uma direção) | seta do teclado |
-| 8-11 | direcional (nenhuma, todas, pares) | bloco de setas |
+## Usage
 
-## Estado
+```sh
+# 1. Extract from your copy (read-only; creates the game/ folder)
+python3 tools/preparar.py "/path/to/data.rpf"
 
-- Pronto: os 38 desenhos, o teste de tamanho, a folha e a demo.
-- Falta: gravar os desenhos de volta no `input_icons.gfx` (trocar as formas de
-  cada `Main_Button_N` mantendo símbolos e ids). Só o desenho muda; a lógica
-  do jogo que decide e anima os prompts fica como está.
+# 2. Generate the 38 PC icons as SVG
+python3 tools/teclas_pc.py output/svg
 
-Regras de desenho, medidas e tipografia: [`ANCORA.md`](ANCORA.md).
+# 3. Check against the approved set (38 OK)
+(cd output/svg && shasum -a 256 -c ../../approved/teclas_pc.sha256)
+```
+
+<details>
+<summary><b>Size test, comparison sheet, demo and README images</b></summary>
+
+```sh
+# Compile the Swift tools (macOS)
+for t in medir folha raster texto_svg; do swiftc -O tools/$t.swift -o tools/$t; done
+
+# Size test: "38 ícones, 0 com falha"
+python3 tools/teste_padrao.py output/svg
+
+# Xbox × PC sheet at the same scale
+args=(); for f in output/svg/botao_*.svg; do n=$(basename "$f"); args+=("game/xbox64/$n" "$f"); done
+FOLHA_ESCALA_COMUM=1 tools/folha output/comparison.png 8 128 "${args[@]}"
+
+# Interactive prompt demo (offline HTML, PC / Xbox toggle, try your own keys)
+python3 tools/demo_animacoes.py game/xbox64 output/svg output/demo.html
+
+# README images
+python3 tools/banner.py docs/banner.svg
+python3 tools/vitrine.py docs
+python3 tools/gifs.py docs/gifs
+```
+</details>
+
+## Mapping
+
+| N | Controller | PC |
+|:-:|---|---|
+| 30 | A | `Shift` |
+| 31 | B | `R` |
+| 32 | X | `Space` |
+| 33 | Y | `F` |
+| 34 | LB | `Tab` |
+| 35 | LT | right mouse button |
+| 36 | RB | `Q` |
+| 37 | RT | left mouse button |
+| 38 | Menu | `Esc` |
+| 39 | View | `V` |
+| 12–15 | left stick, one direction | `W` `S` `A` `D` |
+| 16 | L3 | `Ctrl` |
+| 17–20, 58 | left stick, neutral / pairs / rotate | WASD block |
+| 21–24, 27, 28 | right stick, directions | mouse with arrows |
+| 25 | R3 | `C` |
+| 26 | right stick, neutral | mouse |
+| 29, 59 | rotate right stick | move the mouse (4 arrows) |
+| 4–7 | D-pad, one direction | arrow key |
+| 8–11 | D-pad, none / all / pairs | arrow-key block |
+
+## Layout
+
+```
+tools/                 (code comments are in Portuguese)
+  preparar.py        extracts the font and original icons from your copy
+  rpf9_garimpo.py    reads the .rpf (read-only)
+  gfx_svg.py         converts the original icons to SVG
+  fonte_jogo.py      text → vector outline in the interface typeface
+  teclas_pc.py       generates the 38 PC icons
+  teste_padrao.py    size test (uses medir.swift)
+  folha.swift        comparison sheet
+  demo_animacoes.py  interactive prompt demo
+  banner.py, vitrine.py, gifs.py, raster.swift, texto_svg.swift   README images
+approved/            approved mouse and checksums of the 38 icons
+docs/                README images
+DESIGN.md            drawing rules, sizes, typography and tests (ANCORA.md in Portuguese)
+```
+
+## Status
+
+- [x] 38 approved PC drawings
+- [x] Size test, comparison sheet, interactive demo
+- [ ] Write the drawings back into `input_icons.gfx` (replace the shapes of each
+      `Main_Button_N`, keeping symbols and ids)
+- [ ] In-game test
+
+---
+
+<sub>Personal, private project.</sub>

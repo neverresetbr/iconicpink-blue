@@ -10,7 +10,7 @@ Só lê o .rpf; nada do jogo vem neste repositório.
   2. Converte os ícones originais para SVG (gfx_svg.py) e normaliza no mesmo
      espaço de 64 (<pasta_jogo>/xbox64/botao_NN.svg), para comparar com os de PC.
 
-Uso: preparar.py <caminho/do/data.rpf> [pasta_jogo]   (padrão: ./jogo)
+Uso: preparar.py <caminho/do/data.rpf> [pasta_jogo]   (padrão: ./game)
 """
 import os
 import re
@@ -33,7 +33,7 @@ def raw(data):
 
 def main():
     src = sys.argv[1]
-    out = sys.argv[2] if len(sys.argv) > 2 else os.path.join(os.getcwd(), "jogo")
+    out = sys.argv[2] if len(sys.argv) > 2 else os.path.join(os.getcwd(), "game")
     os.makedirs(out, exist_ok=True)
     icons, fonts = None, []
     print("lendo", src, "(pode levar alguns minutos)")

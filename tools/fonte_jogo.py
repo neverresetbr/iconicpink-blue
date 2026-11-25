@@ -14,8 +14,9 @@ import sys
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 # onde procurar a biblioteca de fontes (extraída da sua cópia por preparar.py):
-# variável GTA_FONTES, depois ./jogo/ e saida/fontes_jogo/
+# variável GTA_FONTES, depois game/, jogo/ e saida/fontes_jogo/
 _CANDIDATES = [os.environ.get("GTA_FONTES", ""),
+               os.path.join(HERE, "..", "game", "gfxfontlib_efigs.gfx"),
                os.path.join(HERE, "..", "jogo", "gfxfontlib_efigs.gfx"),
                os.path.join(HERE, "..", "saida", "fontes_jogo", "gfxfontlib_efigs.gfx")]
 DEFAULT = next((c for c in _CANDIDATES if c and os.path.exists(c)), _CANDIDATES[1])

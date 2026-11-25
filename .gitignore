@@ -1,10 +1,10 @@
-# Nada do jogo entra neste repositório.
-# Arquivos extraídos da SUA cópia por ferramentas/preparar.py
-/jogo/
-# Tudo o que é gerado (SVGs das teclas usam a fonte do jogo, folhas, demo)
-/saida/
+# Nothing from the game goes into this repository.
+# Files extracted from YOUR copy by tools/preparar.py
+/game/
+# Everything generated locally (SVGs, sheets, demo)
+/output/
 
-# Arquivos do jogo, por segurança
+# Game files, just in case
 *.rpf
 *.ttpf
 *.gfx
@@ -14,11 +14,13 @@
 *.dll
 *.torrent
 
-# Binários compilados das ferramentas Swift
-/ferramentas/medir
-/ferramentas/folha
+# Compiled Swift tools
+/tools/medir
+/tools/folha
+/tools/raster
+/tools/texto_svg
 
-# Python / sistema
+# Python / OS
 __pycache__/
 *.pyc
 .DS_Store
