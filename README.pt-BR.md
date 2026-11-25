@@ -55,6 +55,8 @@ flowchart LR
   C -->|teste_padrao.py| D["38 OK"]
   C -->|folha| E["folha Xbox × PC"]
   C -->|demo_animacoes.py| F["demo dos prompts"]
+  C -->|gfx_build.py| G["output/input_icons.gfx<br/>(cópia local)"]
+  G -->|teste_gfx.py| H["OK"]
 ```
 
 ## Requisitos
@@ -76,6 +78,12 @@ python3 tools/teclas_pc.py output/svg
 
 # 3. Conferir com os aprovados (38 OK)
 (cd output/svg && shasum -a 256 -c ../../approved/teclas_pc.sha256)
+
+# 4. Gravar os desenhos numa CÓPIA do arquivo de ícones (fica em output/, nunca commitar)
+python3 tools/gfx_build.py game/input_icons.gfx output/svg output/input_icons.gfx
+
+# 5. Conferir o arquivo novo: código e nomes intactos, 38 botões, pixel a pixel (macOS + ffmpeg)
+python3 tools/teste_gfx.py game/input_icons.gfx output/input_icons.gfx output/svg
 ```
 
 <details>
@@ -138,6 +146,8 @@ tools/
   teste_padrao.py    teste de tamanho (usa medir.swift)
   folha.swift        folha de comparação
   demo_animacoes.py  demo interativa dos prompts
+  gfx_build.py       grava os desenhos numa cópia do input_icons.gfx
+  teste_gfx.py       confere essa cópia (tags, sprites, tamanho, pixel a pixel)
   banner.py, vitrine.py, gifs.py, raster.swift, texto_svg.swift   imagens do README
 approved/            mouse aprovado e conferência dos 38 ícones
 docs/                imagens do README
@@ -148,8 +158,12 @@ ANCORA.md            regras de desenho, medidas, tipografia e testes (DESIGN.md 
 
 - [x] 38 desenhos de PC aprovados
 - [x] Teste de tamanho, folha de comparação, demo interativa
-- [ ] Gravar os desenhos de volta no `input_icons.gfx` (trocar as formas de cada
-      `Main_Button_N` mantendo símbolos e ids)
+- [x] Gravar os desenhos numa cópia do `input_icons.gfx`: cada `Main_Button_N`
+      mantém id, nome e classe; código e tabelas de nomes ficam byte a byte
+      iguais; o arquivo novo é menor que o original; relido, cada botão bate
+      com o desenho aprovado (SSIM ≥ 0,998)
+- [ ] Levar o arquivo novo ao jogo (cópia do `data.rpf` com o patch ou
+      overlay no carregador)
 - [ ] Teste no jogo
 
 ---

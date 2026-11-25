@@ -121,6 +121,9 @@ arquivo sai da sua cópia do jogo (`tools/preparar.py` → `game/`).
    Conferir apertar, segurar, repetido, girar, o QTE e o estado apertado nos
    ícones de PC e de Xbox.
 
+6. Gravar no arquivo do jogo: `python3 tools/gfx_build.py game/input_icons.gfx output/svg output/input_icons.gfx`
+   e depois `python3 tools/teste_gfx.py game/input_icons.gfx output/input_icons.gfx output/svg` → tem de dar **OK**.
+
 ## 6. Mapeamento
 
 Tabela no `README.md`.

@@ -120,6 +120,9 @@ from your copy of the game (`tools/preparar.py` → `game/`).
    Check press, hold, mash, rotate, the QTE and the pressed state on both PC
    and Xbox icons.
 
+6. Writing into the game file: `python3 tools/gfx_build.py game/input_icons.gfx output/svg output/input_icons.gfx`,
+   then `python3 tools/teste_gfx.py game/input_icons.gfx output/input_icons.gfx output/svg` → must print **OK**.
+
 ## 6. Mapping
 
 Table in `README.md`.
