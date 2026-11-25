@@ -1,0 +1,25 @@
+# Nada do jogo entra neste repositório.
+# Arquivos extraídos da SUA cópia por ferramentas/preparar.py
+/jogo/
+# Tudo o que é gerado (SVGs das teclas usam a fonte do jogo, folhas, demo)
+/saida/
+
+# Arquivos do jogo, por segurança
+*.rpf
+*.ttpf
+*.gfx
+*.swf
+*.xvd
+*.exe
+*.dll
+*.torrent
+
+# Binários compilados das ferramentas Swift
+/ferramentas/medir
+/ferramentas/folha
+
+# Python / sistema
+__pycache__/
+*.pyc
+.DS_Store
+Thumbs.db
