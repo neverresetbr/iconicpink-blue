@@ -84,7 +84,16 @@ python3 tools/gfx_build.py game/input_icons.gfx output/svg output/input_icons.gf
 
 # 5. Check the new file: untouched code and names, 38 buttons, pixel match (macOS + ffmpeg)
 python3 tools/teste_gfx.py game/input_icons.gfx output/input_icons.gfx output/svg
+
+# 6. Make a patched COPY of data.rpf (the original is only read)
+python3 tools/gfx_build.py game/input_icons.gfx output/svg output/input_icons_full.gfx --tamanho-original
+python3 tools/rpf_patch.py "/path/to/data.rpf" output/input_icons_full.gfx output/data.rpf
 ```
+
+On Windows, `tools/pasta_pc.ps1` builds a mirror folder of the game (hard
+links and junctions to your files, only `data.rpf` replaced by the patched
+copy), so your game folder is never touched; `desmontar` removes only the
+links.
 
 <details>
 <summary><b>Size test, comparison sheet, demo and README images</b></summary>
@@ -148,6 +157,8 @@ tools/                 (code comments are in Portuguese)
   demo_animacoes.py  interactive prompt demo
   gfx_build.py       writes the drawings into a copy of input_icons.gfx
   teste_gfx.py       checks that copy (tags, sprites, size, pixel match)
+  rpf_patch.py       patched copy of data.rpf with the new icon file
+  pasta_pc.ps1       Windows: mirror folder with the patched data.rpf
   banner.py, vitrine.py, gifs.py, raster.swift, texto_svg.swift   README images
 approved/            approved mouse and checksums of the 38 icons
 docs/                README images
@@ -162,9 +173,9 @@ DESIGN.md            drawing rules, sizes, typography and tests (ANCORA.md in Po
       keeps its id, name and class; code and export tables stay byte-identical;
       the new file is smaller than the original; every button matches the
       approved drawing when read back (SSIM ≥ 0.998)
-- [ ] Get the new file to the game (patched copy of `data.rpf` or a loader
-      overlay)
-- [ ] In-game test
+- [x] Patched copy of `data.rpf` (same offset, rest byte-identical) and a
+      Windows mirror-folder script
+- [ ] In-game test on Windows
 
 ---
 

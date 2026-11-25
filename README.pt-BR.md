@@ -84,7 +84,15 @@ python3 tools/gfx_build.py game/input_icons.gfx output/svg output/input_icons.gf
 
 # 5. Conferir o arquivo novo: código e nomes intactos, 38 botões, pixel a pixel (macOS + ffmpeg)
 python3 tools/teste_gfx.py game/input_icons.gfx output/input_icons.gfx output/svg
+
+# 6. Fazer uma CÓPIA do data.rpf com o patch (o original só é lido)
+python3 tools/gfx_build.py game/input_icons.gfx output/svg output/input_icons_full.gfx --tamanho-original
+python3 tools/rpf_patch.py "/caminho/para/data.rpf" output/input_icons_full.gfx output/data.rpf
 ```
+
+No Windows, o `tools/pasta_pc.ps1` monta uma pasta-espelho do jogo (hard
+links e junções para os seus arquivos, só o `data.rpf` trocado pela cópia),
+então a pasta do jogo nunca é tocada; o `desmontar` remove só os atalhos.
 
 <details>
 <summary><b>Teste de tamanho, folha de comparação, demo e imagens do README</b></summary>
@@ -148,6 +156,8 @@ tools/
   demo_animacoes.py  demo interativa dos prompts
   gfx_build.py       grava os desenhos numa cópia do input_icons.gfx
   teste_gfx.py       confere essa cópia (tags, sprites, tamanho, pixel a pixel)
+  rpf_patch.py       cópia do data.rpf com o arquivo de ícones novo
+  pasta_pc.ps1       Windows: pasta-espelho com o data.rpf modificado
   banner.py, vitrine.py, gifs.py, raster.swift, texto_svg.swift   imagens do README
 approved/            mouse aprovado e conferência dos 38 ícones
 docs/                imagens do README
@@ -162,9 +172,9 @@ ANCORA.md            regras de desenho, medidas, tipografia e testes (DESIGN.md 
       mantém id, nome e classe; código e tabelas de nomes ficam byte a byte
       iguais; o arquivo novo é menor que o original; relido, cada botão bate
       com o desenho aprovado (SSIM ≥ 0,998)
-- [ ] Levar o arquivo novo ao jogo (cópia do `data.rpf` com o patch ou
-      overlay no carregador)
-- [ ] Teste no jogo
+- [x] Cópia do `data.rpf` com o patch (mesmo offset, resto byte a byte igual) e
+      script da pasta-espelho no Windows
+- [ ] Teste no jogo no Windows
 
 ---
 
