@@ -4,6 +4,8 @@
 
 <p align="center"><a href="README.md">English</a> · <b>Português (BR)</b></p>
 
+https://github.com/user-attachments/assets/607a5e6e-0985-4591-90ad-4f9ed1b77d95
+
 <p align="center">
   <img src="docs/demo.png" alt="Teclas de PC nos lugares dos prompts do jogo, em fundo limpo" width="100%">
 </p>

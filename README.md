@@ -4,6 +4,8 @@
 
 <p align="center"><b>English</b> · <a href="README.pt-BR.md">Português (BR)</a></p>
 
+https://github.com/user-attachments/assets/607a5e6e-0985-4591-90ad-4f9ed1b77d95
+
 <p align="center">
   <img src="docs/demo.png" alt="PC keys in the game's prompt layouts, on a clean background" width="100%">
 </p>
