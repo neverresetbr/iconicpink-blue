@@ -160,6 +160,7 @@ tools/                 (code comments are in Portuguese)
   rpf_patch.py       patched copy of data.rpf with the new icon file
   pasta_pc.ps1       Windows: mirror folder with the patched data.rpf
   banner.py, vitrine.py, gifs.py, raster.swift, texto_svg.swift   README images
+  limpar_metadados.py  strips image metadata (EXIF, colour profile, dates) before publishing
 approved/            approved mouse and checksums of the 38 icons
 docs/                README images
 DESIGN.md            drawing rules, sizes, typography and tests (ANCORA.md in Portuguese)

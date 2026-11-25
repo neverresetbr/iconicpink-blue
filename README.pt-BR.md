@@ -159,6 +159,7 @@ tools/
   rpf_patch.py       cópia do data.rpf com o arquivo de ícones novo
   pasta_pc.ps1       Windows: pasta-espelho com o data.rpf modificado
   banner.py, vitrine.py, gifs.py, raster.swift, texto_svg.swift   imagens do README
+  limpar_metadados.py  tira metadados das imagens (EXIF, perfil de cor, datas) antes de publicar
 approved/            mouse aprovado e conferência dos 38 ícones
 docs/                imagens do README
 ANCORA.md            regras de desenho, medidas, tipografia e testes (DESIGN.md em inglês)

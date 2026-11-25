@@ -182,6 +182,10 @@ def main():
             f.write(svg)
         subprocess.run([raster, tmp, os.path.join(out, name + ".png"), str(width)], check=True)
         os.remove(tmp)
+    # sem metadados do computador nas imagens (EXIF, perfil de cor, datas)
+    subprocess.run([sys.executable, "-I", os.path.join(HERE, "limpar_metadados.py"),
+                    os.path.join(out, "sheet.png"), os.path.join(out, "demo.png")], check=True,
+                   stdout=subprocess.DEVNULL)
 
 
 if __name__ == "__main__":
