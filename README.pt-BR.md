@@ -33,6 +33,15 @@ Valores lidos do próprio código de prompts do jogo: o ícone apertado encolhe
 para 0,8 e troca de cor em 6 quadros, o brilho de conclusão é de 50% e o QTE
 usa um arco rosa sobre um trilho a 15%.
 
+## A tela de controles
+
+O menu de configurações mostra um desenho do controle. Ele é trocado por um
+teclado e mouse no mesmo estilo, com as teclas que o jogo usa em preto.
+
+<p align="center">
+  <img src="docs/controls.png" alt="Teclado e mouse no lugar do desenho do controle" width="80%">
+</p>
+
 ## Os 38 ícones
 
 <p align="center">
@@ -88,11 +97,18 @@ python3 tools/teste_gfx.py game/input_icons.gfx output/input_icons.gfx output/sv
 # 6. Fazer uma CÓPIA do data.rpf com o patch (o original só é lido)
 python3 tools/gfx_build.py game/input_icons.gfx output/svg output/input_icons_full.gfx --tamanho-original
 python3 tools/rpf_patch.py "/caminho/para/data.rpf" output/input_icons_full.gfx output/data.rpf
+
+# 7. Tela de controles: teclado + mouse numa CÓPIA do platform.ttpf (macOS)
+python3 tools/controle_pc.py output/controls.svg
+tools/raster output/controls.svg output/controls.png 1024
+python3 tools/ttpf_patch.py "/caminho/para/data/ttdb/ui/platform.ttpf" output/controls.png output/platform.ttpf
 ```
 
 No Windows, o `tools/pasta_pc.ps1` monta uma pasta-espelho do jogo (hard
-links e junções para os seus arquivos, só o `data.rpf` trocado pela cópia),
-então a pasta do jogo nunca é tocada; o `desmontar` remove só os atalhos.
+links e junções para os seus arquivos, só o `data.rpf` e o
+`data\ttdb\ui\platform.ttpf` trocados pelas cópias), então a pasta do jogo
+nunca é tocada; o `desmontar` remove só os atalhos e se recusa a rodar em
+qualquer pasta que não seja a espelho.
 
 <details>
 <summary><b>Teste de tamanho, folha de comparação, demo e imagens do README</b></summary>
@@ -157,7 +173,10 @@ tools/
   gfx_build.py       grava os desenhos numa cópia do input_icons.gfx
   teste_gfx.py       confere essa cópia (tags, sprites, tamanho, pixel a pixel)
   rpf_patch.py       cópia do data.rpf com o arquivo de ícones novo
-  pasta_pc.ps1       Windows: pasta-espelho com o data.rpf modificado
+  pasta_pc.ps1       Windows: pasta-espelho com os arquivos modificados
+  controle_pc.py     desenho de teclado e mouse para a tela de controles
+  ttpf_patch.py      grava esse desenho numa cópia do platform.ttpf (BC7)
+  ttpf.py, detile.py leem texturas .ttpf e desfazem o tiling do console (só leitura)
   banner.py, vitrine.py, gifs.py, raster.swift, texto_svg.swift   imagens do README
   limpar_metadados.py  tira metadados das imagens (EXIF, perfil de cor, datas) antes de publicar
 approved/            mouse aprovado e conferência dos 38 ícones
@@ -175,6 +194,8 @@ ANCORA.md            regras de desenho, medidas, tipografia e testes (DESIGN.md 
       com o desenho aprovado (SSIM ≥ 0,998)
 - [x] Cópia do `data.rpf` com o patch (mesmo offset, resto byte a byte igual) e
       script da pasta-espelho no Windows
+- [x] Tela de controles: teclado e mouse gravados numa cópia do
+      `platform.ttpf` (BC7, relido na GPU: SSIM 0,999)
 - [ ] Teste no jogo no Windows
 
 ---

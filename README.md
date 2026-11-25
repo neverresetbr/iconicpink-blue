@@ -33,6 +33,15 @@ Values read from the game's own prompt code: a pressed icon shrinks to 0.8 and
 changes colour over 6 frames, the completion glow is 50%, and the QTE uses a
 pink arc on a 15% track.
 
+## The controls screen
+
+The settings menu shows a drawing of the controller. It is replaced by a
+keyboard and mouse in the same style, with the keys the game uses in black.
+
+<p align="center">
+  <img src="docs/controls.png" alt="Keyboard and mouse in place of the controller drawing" width="80%">
+</p>
+
 ## All 38 icons
 
 <p align="center">
@@ -88,12 +97,18 @@ python3 tools/teste_gfx.py game/input_icons.gfx output/input_icons.gfx output/sv
 # 6. Make a patched COPY of data.rpf (the original is only read)
 python3 tools/gfx_build.py game/input_icons.gfx output/svg output/input_icons_full.gfx --tamanho-original
 python3 tools/rpf_patch.py "/path/to/data.rpf" output/input_icons_full.gfx output/data.rpf
+
+# 7. Controls screen: keyboard + mouse art into a COPY of platform.ttpf (macOS)
+python3 tools/controle_pc.py output/controls.svg
+tools/raster output/controls.svg output/controls.png 1024
+python3 tools/ttpf_patch.py "/path/to/data/ttdb/ui/platform.ttpf" output/controls.png output/platform.ttpf
 ```
 
 On Windows, `tools/pasta_pc.ps1` builds a mirror folder of the game (hard
-links and junctions to your files, only `data.rpf` replaced by the patched
-copy), so your game folder is never touched; `desmontar` removes only the
-links.
+links and junctions to your files, only `data.rpf` and
+`data\ttdb\ui\platform.ttpf` replaced by the patched copies), so your game
+folder is never touched; `desmontar` removes only the links and refuses to run
+on anything that is not a mirror folder.
 
 <details>
 <summary><b>Size test, comparison sheet, demo and README images</b></summary>
@@ -158,7 +173,10 @@ tools/                 (code comments are in Portuguese)
   gfx_build.py       writes the drawings into a copy of input_icons.gfx
   teste_gfx.py       checks that copy (tags, sprites, size, pixel match)
   rpf_patch.py       patched copy of data.rpf with the new icon file
-  pasta_pc.ps1       Windows: mirror folder with the patched data.rpf
+  pasta_pc.ps1       Windows: mirror folder with the patched files
+  controle_pc.py     keyboard + mouse art for the controls screen
+  ttpf_patch.py      writes that art into a copy of platform.ttpf (BC7)
+  ttpf.py, detile.py read .ttpf textures and undo the console tiling (read-only)
   banner.py, vitrine.py, gifs.py, raster.swift, texto_svg.swift   README images
   limpar_metadados.py  strips image metadata (EXIF, colour profile, dates) before publishing
 approved/            approved mouse and checksums of the 38 icons
@@ -176,6 +194,8 @@ DESIGN.md            drawing rules, sizes, typography and tests (ANCORA.md in Po
       approved drawing when read back (SSIM ≥ 0.998)
 - [x] Patched copy of `data.rpf` (same offset, rest byte-identical) and a
       Windows mirror-folder script
+- [x] Controls screen: keyboard + mouse art written into a copy of
+      `platform.ttpf` (BC7, read back on the GPU: SSIM 0.999)
 - [ ] In-game test on Windows
 
 ---
