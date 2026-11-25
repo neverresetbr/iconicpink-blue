@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="docs/banner.svg" alt="iconicpink-blue" width="100%">
+  <img src="docs/banner.png" alt="iconicpink-blue" width="100%">
 </p>
 
 <p align="center"><b>English</b> · <a href="README.pt-BR.md">Português (BR)</a></p>
@@ -128,7 +128,6 @@ FOLHA_ESCALA_COMUM=1 tools/folha output/comparison.png 8 128 "${args[@]}"
 python3 tools/demo_animacoes.py game/xbox64 output/svg output/demo.html
 
 # README images
-python3 tools/banner.py docs/banner.svg
 python3 tools/vitrine.py docs
 python3 tools/gifs.py docs/gifs
 ```
@@ -177,7 +176,7 @@ tools/                 (code comments are in Portuguese)
   controle_pc.py     keyboard + mouse art for the controls screen
   ttpf_patch.py      writes that art into a copy of platform.ttpf (BC7)
   ttpf.py, detile.py read .ttpf textures and undo the console tiling (read-only)
-  banner.py, vitrine.py, gifs.py, raster.swift, texto_svg.swift   README images
+  vitrine.py, gifs.py, raster.swift, texto_svg.swift   README images
   limpar_metadados.py  strips image metadata (EXIF, colour profile, dates) before publishing
 approved/            approved mouse and checksums of the 38 icons
 docs/                README images

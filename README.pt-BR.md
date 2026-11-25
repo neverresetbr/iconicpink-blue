@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="docs/banner.svg" alt="iconicpink-blue" width="100%">
+  <img src="docs/banner.png" alt="iconicpink-blue" width="100%">
 </p>
 
 <p align="center"><a href="README.md">English</a> · <b>Português (BR)</b></p>
@@ -128,7 +128,6 @@ FOLHA_ESCALA_COMUM=1 tools/folha output/comparison.png 8 128 "${args[@]}"
 python3 tools/demo_animacoes.py game/xbox64 output/svg output/demo.html
 
 # Imagens do README
-python3 tools/banner.py docs/banner.svg
 python3 tools/vitrine.py docs
 python3 tools/gifs.py docs/gifs
 ```
@@ -177,7 +176,7 @@ tools/
   controle_pc.py     desenho de teclado e mouse para a tela de controles
   ttpf_patch.py      grava esse desenho numa cópia do platform.ttpf (BC7)
   ttpf.py, detile.py leem texturas .ttpf e desfazem o tiling do console (só leitura)
-  banner.py, vitrine.py, gifs.py, raster.swift, texto_svg.swift   imagens do README
+  vitrine.py, gifs.py, raster.swift, texto_svg.swift   imagens do README
   limpar_metadados.py  tira metadados das imagens (EXIF, perfil de cor, datas) antes de publicar
 approved/            mouse aprovado e conferência dos 38 ícones
 docs/                imagens do README
