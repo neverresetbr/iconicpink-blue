@@ -199,4 +199,4 @@ DESIGN.md            drawing rules, sizes, typography and tests (ANCORA.md in Po
 
 ---
 
-<sub>Personal, private project.</sub>
+<sub>Personal project.</sub>

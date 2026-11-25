@@ -199,4 +199,4 @@ ANCORA.md            regras de desenho, medidas, tipografia e testes (DESIGN.md 
 
 ---
 
-<sub>Projeto pessoal e privado.</sub>
+<sub>Projeto pessoal.</sub>
