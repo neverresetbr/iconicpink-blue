@@ -159,6 +159,13 @@ python3 tools/gifs.py docs/gifs
 | 4–7 | D-pad, one direction | arrow key |
 | 8–11 | D-pad, none / all / pairs | arrow-key block |
 
+## Part 2: Windows look
+
+A launcher that adds the game's splash screen, the icon on the window and the
+taskbar and, if you want, a custom cursor, without changing a line of
+VIctory or its forks (VIctory, Belobug, avatarmanz and DexNom). See
+[windows/](windows/README.md).
+
 ## Layout
 
 ```
@@ -181,6 +188,7 @@ tools/                 (code comments are in Portuguese)
   vitrine.py, gifs.py, raster.swift, texto_svg.swift   README images
   limpar_metadados.py  strips image metadata (EXIF, colour profile, dates) before publishing
 approved/            approved mouse and checksums of the 38 icons
+windows/             part 2: Windows look launcher (Lancador.cs, instalar.ps1)
 docs/                README images
 DESIGN.md            drawing rules, sizes, typography and tests (ANCORA.md in Portuguese)
 ```
@@ -198,6 +206,8 @@ DESIGN.md            drawing rules, sizes, typography and tests (ANCORA.md in Po
 - [x] Controls screen: keyboard + mouse art written into a copy of
       `platform.ttpf` (BC7, read back on the GPU: SSIM 0.999)
 - [ ] In-game test on Windows
+- [x] Part 2: Windows look launcher (splash, icon, cursor), fork-agnostic
+- [ ] Part 2: test on Windows
 
 ---
 

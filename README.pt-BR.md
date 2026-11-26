@@ -159,6 +159,13 @@ python3 tools/gifs.py docs/gifs
 | 4–7 | direcional, uma direção | seta do teclado |
 | 8–11 | direcional, nenhuma / todas / pares | bloco de setas |
 
+## Parte 2: visual do Windows
+
+Um lançador que põe a tela de abertura do jogo, o ícone na janela e na barra
+de tarefas e, se quiser, um cursor próprio, sem mudar nenhuma linha do
+VIctory nem dos forks (VIctory, Belobug, avatarmanz e DexNom). Veja
+[windows/](windows/README.pt-BR.md).
+
 ## Estrutura
 
 ```
@@ -181,6 +188,7 @@ tools/
   vitrine.py, gifs.py, raster.swift, texto_svg.swift   imagens do README
   limpar_metadados.py  tira metadados das imagens (EXIF, perfil de cor, datas) antes de publicar
 approved/            mouse aprovado e conferência dos 38 ícones
+windows/             parte 2: lançador visual (Lancador.cs, instalar.ps1)
 docs/                imagens do README
 ANCORA.md            regras de desenho, medidas, tipografia e testes (DESIGN.md em inglês)
 ```
@@ -198,6 +206,8 @@ ANCORA.md            regras de desenho, medidas, tipografia e testes (DESIGN.md 
 - [x] Tela de controles: teclado e mouse gravados numa cópia do
       `platform.ttpf` (BC7, relido na GPU: SSIM 0,999)
 - [ ] Teste no jogo no Windows
+- [x] Parte 2: lançador visual (abertura, ícone, cursor), compatível com os forks
+- [ ] Parte 2: teste no Windows
 
 ---
 
