@@ -6,6 +6,11 @@
 
 <p align="center"><a href="https://neverresetbr.github.io/iconicpink-blue/demo/"><b>▶ Live demo</b></a>: try the keys, the prompts, the cursor and the Windows look in your browser</p>
 
+<table>
+<tr><td align="center" width="33%"><a href="https://neverresetbr.github.io/iconicpink-blue/demo/"><img src="docs/thumbs/demo.jpg" alt="Live demo" width="100%"><br><b>▶ Live demo</b></a><br><sub>real keyboard and mouse, in your browser</sub></td><td align="center" width="33%"><a href="#all-38-icons"><img src="docs/thumbs/icons.jpg" alt="All 38 icons" width="100%"><br><b>All 38 icons</b></a><br><sub>every Xbox button turned into a PC key</sub></td><td align="center" width="33%"><a href="#the-prompts-in-motion"><img src="docs/thumbs/prompts.jpg" alt="The prompts" width="100%"><br><b>The prompts</b></a><br><sub>press, hold, mash and QTE</sub></td></tr>
+<tr><td align="center" width="33%"><a href="#the-controls-screen"><img src="docs/thumbs/controls.jpg" alt="Controls screen" width="100%"><br><b>The controls screen</b></a><br><sub>keyboard and mouse instead of the controller</sub></td><td align="center" width="33%"><a href="#part-2-windows-look"><img src="docs/thumbs/windows.jpg" alt="Part 2" width="100%"><br><b>Part 2: Windows look</b></a><br><sub>splash, icon and cursor</sub></td><td align="center" width="33%"><a href="docs/windows_teste.mp4"><img src="docs/thumbs/test.jpg" alt="Real test" width="100%"><br><b>▶ Real test on Windows</b></a><br><sub>recorded on Windows 11</sub></td></tr>
+</table>
+
 https://github.com/user-attachments/assets/607a5e6e-0985-4591-90ad-4f9ed1b77d95
 
 <p align="center">

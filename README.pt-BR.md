@@ -6,6 +6,11 @@
 
 <p align="center"><a href="https://neverresetbr.github.io/iconicpink-blue/demo/"><b>▶ Demo ao vivo</b></a>: teste as teclas, os prompts, o cursor e o visual do Windows no navegador</p>
 
+<table>
+<tr><td align="center" width="33%"><a href="https://neverresetbr.github.io/iconicpink-blue/demo/"><img src="docs/thumbs/demo.jpg" alt="Demo ao vivo" width="100%"><br><b>▶ Demo ao vivo</b></a><br><sub>teclado e mouse de verdade, no navegador</sub></td><td align="center" width="33%"><a href="#os-38-ícones"><img src="docs/thumbs/icons.jpg" alt="Os 38 ícones" width="100%"><br><b>Os 38 ícones</b></a><br><sub>cada botão do Xbox virou uma tecla de PC</sub></td><td align="center" width="33%"><a href="#os-prompts-em-movimento"><img src="docs/thumbs/prompts.jpg" alt="Os prompts" width="100%"><br><b>Os prompts</b></a><br><sub>apertar, segurar, repetido e QTE</sub></td></tr>
+<tr><td align="center" width="33%"><a href="#a-tela-de-controles"><img src="docs/thumbs/controls.jpg" alt="A tela de controles" width="100%"><br><b>A tela de controles</b></a><br><sub>teclado e mouse no lugar do controle</sub></td><td align="center" width="33%"><a href="#parte-2-visual-do-windows"><img src="docs/thumbs/windows.jpg" alt="Parte 2" width="100%"><br><b>Parte 2: visual do Windows</b></a><br><sub>tela de abertura, ícone e cursor</sub></td><td align="center" width="33%"><a href="docs/windows_teste.mp4"><img src="docs/thumbs/test.jpg" alt="Teste real" width="100%"><br><b>▶ Teste real no Windows</b></a><br><sub>gravação no Windows 11</sub></td></tr>
+</table>
+
 https://github.com/user-attachments/assets/607a5e6e-0985-4591-90ad-4f9ed1b77d95
 
 <p align="center">
