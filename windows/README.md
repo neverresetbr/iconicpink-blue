@@ -36,9 +36,9 @@ way, let the game create its own window and write "fps" in its title once they
 start drawing; that is the signal that closes the splash.
 
 > [!IMPORTANT]
-> Nothing from the game is in here. The splash comes from **your** build
-> (`xbs_splash.png`). The icon comes from a logo PNG of yours (`-Logo`) or,
-> without one, from the official icon your build ships (`xbs_logo_480.png`).
+> No game file is in here. The splash comes from **your** build
+> (`xbs_splash.png`). The icon comes from the GTA VI logo in `logo/` (a Rockstar Games
+> trademark, included only for the icon) or from a PNG of yours (`-Logo`).
 
 ## Test
 
@@ -53,19 +53,19 @@ and the installer compiles `Lancador.cs` on the spot.
 ```powershell
 # VIctory, Belobug, avatarmanz (built by you)
 powershell -ExecutionPolicy Bypass -File instalar.ps1 instalar `
-  -Jogo "D:\game\game_scarlett_master.exe" -Logo "D:\logo.png" `
+  -Jogo "D:\game\game_scarlett_master.exe" `
   -Programa "D:\VIctory\target\release\victory.exe" -Pasta "D:\VIctory" `
   -Argumentos 'run "D:\game\game_scarlett_master.exe" --execute'
 
 # DexNom (after its Setup.cmd)
 powershell -ExecutionPolicy Bypass -File instalar.ps1 instalar `
-  -Jogo "D:\game\game_scarlett_master.exe" -Logo "D:\logo.png" `
+  -Jogo "D:\game\game_scarlett_master.exe" `
   -Programa "$env:LOCALAPPDATA\DexNom Runtime\victory-play.exe"
 ```
 
 - `-Jogo`: the game executable. With part 1, use the one in the mirror folder.
-- `-Logo` (optional): a PNG with a transparent background. The icon comes out
-  at 16 to 256 px.
+- Logo: by default, the GTA VI logo shipped here (`logo/gta6_logo.png`). The icon
+  comes out at 16 to 256 px. `-Logo` uses another PNG with a transparent background.
 - Cursor: ours by default (`cursor/radar.cur`: the radar arrow, white body,
   rim in the logo gradient). `-Cursor` uses another `.cur`; `-SemCursor` leaves the cursor alone.
 - `-Nome` (optional): the shortcut name (default "Grand Theft Auto VI").

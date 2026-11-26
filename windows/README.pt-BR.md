@@ -36,9 +36,9 @@ jeito, deixam o jogo criar a própria janela e escrevem "fps" no título dela
 quando começam a desenhar; é esse sinal que fecha a tela de abertura.
 
 > [!IMPORTANT]
-> Nada do jogo está aqui. A tela de abertura vem da **sua** build
-> (`xbs_splash.png`). O ícone sai de um PNG de logo seu (`-Logo`) ou, sem ele,
-> do ícone oficial que a build traz (`xbs_logo_480.png`).
+> Nenhum arquivo do jogo está aqui. A tela de abertura vem da **sua** build
+> (`xbs_splash.png`). O ícone sai do logo do GTA VI em `logo/` (marca da Rockstar Games,
+> incluído só para o ícone) ou de um PNG seu (`-Logo`).
 
 ## Teste
 
@@ -53,18 +53,19 @@ Framework 4, e o instalador compila o `Lancador.cs` na hora.
 ```powershell
 # VIctory, Belobug, avatarmanz (compilados por você)
 powershell -ExecutionPolicy Bypass -File instalar.ps1 instalar `
-  -Jogo "D:\jogo\game_scarlett_master.exe" -Logo "D:\logo.png" `
+  -Jogo "D:\jogo\game_scarlett_master.exe" `
   -Programa "D:\VIctory\target\release\victory.exe" -Pasta "D:\VIctory" `
   -Argumentos 'run "D:\jogo\game_scarlett_master.exe" --execute'
 
 # DexNom (depois do Setup.cmd dele)
 powershell -ExecutionPolicy Bypass -File instalar.ps1 instalar `
-  -Jogo "D:\jogo\game_scarlett_master.exe" -Logo "D:\logo.png" `
+  -Jogo "D:\jogo\game_scarlett_master.exe" `
   -Programa "$env:LOCALAPPDATA\DexNom Runtime\victory-play.exe"
 ```
 
 - `-Jogo`: o executável do jogo. Com a parte 1, use o da pasta-espelho.
-- `-Logo` (opcional): PNG com fundo transparente. O ícone sai em 16 a 256 px.
+- Logo: por padrão, o do GTA VI que vem no pacote (`logo/gta6_logo.png`). O ícone sai em
+  16 a 256 px. `-Logo` usa outro PNG com fundo transparente.
 - Cursor: por padrão, o nosso (`cursor/radar.cur`: seta do radar, miolo branco,
   filete no degradê do logo). `-Cursor` usa outro `.cur`; `-SemCursor` não troca o cursor.
 - `-Nome` (opcional): o nome do atalho (padrão "Grand Theft Auto VI").

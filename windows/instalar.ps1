@@ -5,9 +5,9 @@
 # (tela de abertura, ícone da janela e da barra de tarefas, cursor).
 #
 # O que faz (tudo neste computador, nada é baixado):
-#  - gera icon.ico (16 a 256 px) a partir do -Logo (PNG com fundo transparente);
-#    sem -Logo, recorta o emblema do ícone oficial que a build traz
-#    (xbs_logo_480.png);
+#  - gera icon.ico (16 a 256 px) do logo do pacote (logo\gta6_logo.png) ou do
+#    -Logo que você passar (PNG com fundo transparente); sem nenhum dos dois,
+#    recorta o emblema do ícone oficial que a build traz (xbs_logo_480.png);
 #  - copia a tela de abertura da build (xbs_splash.png);
 #  - usa o cursor do pacote (cursor\radar.cur), ou o -Cursor que você passar;
 #    -SemCursor deixa o cursor do Windows como está;
@@ -145,6 +145,10 @@ function Novo-Ico([string]$png, [string]$saida, $recorte) {
 New-Item -ItemType Directory -Force -Path $visual | Out-Null
 Set-Content -LiteralPath $marca -Value "pasta criada pelo instalar.ps1 do iconicpink-blue"
 $ico = Join-Path $visual "icon.ico"
+if (-not $Logo) {
+    $padrao = Join-Path $PSScriptRoot "logo\gta6_logo.png"
+    if (Test-Path -LiteralPath $padrao) { $Logo = $padrao }
+}
 if ($Logo) {
     if (-not (Test-Path -LiteralPath $Logo)) { throw "não achei o logo em $Logo" }
     Novo-Ico $Logo $ico $null
