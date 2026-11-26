@@ -4,6 +4,8 @@
 
 <p align="center"><b>English</b> · <a href="README.pt-BR.md">Português (BR)</a></p>
 
+<p align="center"><a href="https://neverresetbr.github.io/iconicpink-blue/demo/"><b>▶ Live demo</b></a>: try the keys, the prompts, the cursor and the Windows look in your browser</p>
+
 https://github.com/user-attachments/assets/607a5e6e-0985-4591-90ad-4f9ed1b77d95
 
 <p align="center">

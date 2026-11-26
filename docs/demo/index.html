@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>iconicpink-blue · live demo</title>
+<style>
+  :root { --pink:#ff4f9a; --blue:#3d8bff; --ink:#0b0b0f; --bg:#0d1016; --mute:#9aa3b2; --card:#151a23; }
+  * { box-sizing:border-box; }
+  html { background:var(--bg); }
+  body { margin:0; color:#e9ecf2; font:16px/1.5 -apple-system, "Segoe UI", Helvetica, Arial, sans-serif;
+         background: radial-gradient(70% 50% at 8% 0%, rgba(61,139,255,.22), transparent 70%),
+                     radial-gradient(60% 50% at 96% 100%, rgba(255,79,154,.18), transparent 70%), var(--bg);
+         min-height:100vh; }
+  body.radar, body.radar * { cursor: url(radar32.png) 2 2, url(radar.cur), auto; }
+  main { max-width:1180px; margin:0 auto; padding:28px 22px 60px; }
+  header { display:flex; align-items:center; gap:18px; flex-wrap:wrap; }
+  header h1 { font-size:28px; margin:0; letter-spacing:-.01em; }
+  header h1 b { color:var(--pink); }
+  .note { display:inline-flex; align-items:center; gap:8px; font-size:13px; color:#d6dbe4;
+          background:rgba(0,0,0,.45); border:1px solid rgba(255,255,255,.18); border-radius:99px; padding:5px 12px; }
+  .note::before { content:""; width:8px; height:8px; border-radius:50%; background:var(--pink); }
+  a { color:#8fc1ff; }
+  h2 { font-size:20px; margin:42px 0 6px; }
+  p.lead { color:var(--mute); margin:0 0 14px; max-width:820px; }
+  section { scroll-margin-top:20px; }
+  nav { display:flex; gap:14px; flex-wrap:wrap; margin-top:14px; font-size:14px; }
+
+  /* palco do jogo (sem arte do jogo: só um céu de fim de tarde) */
+  .stage { position:relative; border-radius:16px; overflow:hidden; min-height:420px;
+           background: linear-gradient(180deg, rgba(10,8,20,.55), rgba(10,8,20,.35) 50%, rgba(10,8,20,.6)),
+                       url(art.jpg) center/cover;
+           box-shadow: 0 20px 60px rgba(0,0,0,.45); user-select:none; outline:none; }
+  .stage:focus-visible { box-shadow: 0 0 0 3px var(--blue), 0 20px 60px rgba(0,0,0,.45); }
+  .stage .hint { position:absolute; inset:auto 0 18px 0; text-align:center; font-size:14px; color:rgba(255,255,255,.85); }
+  .help { position:absolute; left:22px; top:22px; background:rgba(0,0,0,.72); padding:12px 16px; font-size:17px;
+          display:flex; align-items:center; gap:8px; max-width:360px; }
+  .pill { position:absolute; left:50%; bottom:64px; transform:translateX(-50%); background:rgba(27,87,180,.92);
+          border-radius:99px; padding:8px 20px 8px 14px; display:flex; align-items:center; gap:8px; font-size:17px; white-space:nowrap; }
+  .corner { position:absolute; right:22px; bottom:22px; display:flex; align-items:center; gap:14px; font:600 15px/1 "Helvetica Neue", Arial;
+            letter-spacing:.06em; font-stretch:condensed; }
+  .corner span { display:flex; align-items:center; gap:6px; }
+  .ic { position:relative; width:var(--s,48px); height:var(--s,48px); flex:0 0 auto; display:inline-block; }
+  .ic img { position:absolute; left:-25%; top:-25%; width:150%; height:150%; transition: transform .1s cubic-bezier(.2,.8,.3,1);
+            pointer-events:none; -webkit-user-drag:none; }
+  .ic.on img { transform: scale(.8); }
+  .ic svg.ring { position:absolute; left:-25%; top:-25%; width:150%; height:150%; overflow:visible; pointer-events:none; }
+
+  /* grade de todas as teclas */
+  .grid { display:grid; grid-template-columns: repeat(auto-fill, minmax(132px, 1fr)); gap:10px; margin-top:14px; }
+  .cell { background:var(--card); border:1px solid rgba(255,255,255,.07); border-radius:12px; padding:14px 8px 10px;
+          display:flex; flex-direction:column; align-items:center; gap:8px; transition: border-color .15s, background .15s; }
+  .cell.on { border-color: var(--pink); background:#1d1622; }
+  .cell .k { font-weight:600; font-size:14px; text-align:center; }
+  .cell .x { color:var(--mute); font-size:12px; text-align:center; }
+  .gtitle { grid-column:1/-1; color:var(--mute); font-size:13px; text-transform:uppercase; letter-spacing:.08em; margin-top:8px; }
+
+  /* cartões dos tipos de prompt */
+  .cards { display:grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap:14px; }
+  .card { background:var(--card); border:1px solid rgba(255,255,255,.07); border-radius:14px; padding:16px; }
+  .card h3 { margin:0 0 2px; font-size:16px; }
+  .card .t { color:var(--mute); font-size:13px; min-height:38px; }
+  .card .box { height:170px; display:flex; align-items:center; justify-content:center; position:relative;
+               background: linear-gradient(180deg,#24304d,#4b3a63); border-radius:10px; margin-top:10px; overflow:hidden; }
+  .card .st { text-align:center; color:#d6dbe4; font-size:13px; margin-top:8px; min-height:20px; }
+  button { font:inherit; color:#fff; background:#2a3550; border:1px solid rgba(255,255,255,.18); border-radius:8px; padding:6px 14px; }
+  button:hover { background:#34426a; }
+
+  /* cursor */
+  .curbox { display:flex; gap:22px; flex-wrap:wrap; align-items:stretch; }
+  .curshow { flex:1 1 300px; background:var(--card); border-radius:14px; padding:18px; display:flex; align-items:center; gap:26px; }
+  .curshow img { image-rendering:auto; }
+  .curtry { flex:2 1 380px; border-radius:14px; min-height:200px; display:flex; align-items:center; justify-content:center;
+            color:#fff; background: linear-gradient(135deg,#1b2a4a,#5a3d72 55%,#d06b8c); font-size:15px; }
+  label.sw { display:inline-flex; gap:8px; align-items:center; margin-top:10px; color:var(--mute); font-size:14px; }
+
+  /* simulação do Windows */
+  .win { position:relative; aspect-ratio:16/9; border-radius:14px; overflow:hidden; user-select:none;
+         background: radial-gradient(80% 70% at 10% 0%, rgba(61,139,255,.35), transparent 70%),
+                     radial-gradient(70% 60% at 95% 100%, rgba(255,79,154,.3), transparent 70%), #0d1016; }
+  .win .sc { position:absolute; left:2.2%; top:3.5%; width:8.5%; text-align:center; font-size:11px; padding:6px 2px; border-radius:6px; }
+  .win .sc.sel { background:rgba(255,255,255,.2); }
+  .win .sc img { width:62%; display:block; margin:0 auto 4px; }
+  .win .gw { position:absolute; left:20%; top:12%; width:60%; height:66%; background:#202020; border-radius:8px; opacity:0;
+             transform:scale(.96); transition: opacity .25s, transform .25s; box-shadow:0 10px 40px rgba(0,0,0,.5); }
+  .win .gw.show { opacity:1; transform:none; }
+  .win .gw .tb { height:30px; display:flex; align-items:center; gap:8px; padding:0 10px; font-size:12px; color:#e6e6e6; }
+  .win .gw .tb img { width:16px; height:16px; }
+  .win .gw .tb .ctl { margin-left:auto; letter-spacing:14px; color:#ccc; }
+  .win .gw .content { position:absolute; inset:30px 0 0 0; background:#000; display:flex; align-items:center; justify-content:center;
+                      color:#cfd5df; font-size:14px; transition: background .5s; }
+  .win .gw .content.draw { background: url(art.jpg) center/cover; }
+  .win .sp { position:absolute; left:50%; top:46%; width:56%; aspect-ratio:16/9; transform:translate(-50%,-50%) scale(.97);
+             border-radius:12px; opacity:0; transition: opacity .35s, transform .35s; display:flex; flex-direction:column;
+             align-items:center; justify-content:center; gap:10px; box-shadow:0 14px 50px rgba(0,0,0,.6);
+             background: url(art.jpg) center/cover; z-index:5; }
+  .win .sp.show { opacity:1; transform:translate(-50%,-50%) scale(1); }
+  .win .sp img { width:40%; }
+  .win .sp small { color:#cfc6e8; font-size:12px; }
+  .win .task { position:absolute; left:0; right:0; bottom:0; height:7%; background:rgba(28,28,28,.95); display:flex;
+               align-items:center; justify-content:center; gap:14px; }
+  .win .task i { width:22px; height:22px; border-radius:5px; display:block; }
+  .win .task .g { width:30px; height:30px; display:none; position:relative; }
+  .win .task .g.show { display:block; animation: pop .3s ease-out; }
+  .win .task .g img { width:100%; height:100%; }
+  .win .task .g::after { content:""; position:absolute; left:30%; right:30%; bottom:-5px; height:3px; border-radius:2px; background:#60cdff; }
+  .win .at { position:absolute; inset:0; background:rgba(0,0,0,.4); display:none; align-items:center; justify-content:center; z-index:6; }
+  .win .at.show { display:flex; }
+  .win .at div { background:#2b2b2b; border:2px solid rgba(255,255,255,.6); border-radius:12px; padding:12px 16px; text-align:left; }
+  .win .at div p { margin:0 0 8px; display:flex; gap:8px; align-items:center; font-size:13px; }
+  .win .at div p img { width:20px; }
+  .win .at div span { display:block; width:240px; height:135px; border-radius:6px;
+                      background: url(art.jpg) center/cover; }
+  .win .lbl { position:absolute; right:2%; top:3%; font-size:12px; color:#e6e6e6; background:rgba(0,0,0,.55);
+              border:1px solid rgba(255,255,255,.2); border-radius:99px; padding:4px 10px; }
+  .win.radar, .win.radar * { cursor: url(radar32.png) 2 2, url(radar.cur), auto; }
+  @keyframes pop { from { transform:scale(.4); opacity:0 } to { transform:none; opacity:1 } }
+  .row { display:flex; gap:10px; margin-top:10px; flex-wrap:wrap; }
+  footer { margin-top:50px; color:var(--mute); font-size:13px; border-top:1px solid rgba(255,255,255,.08); padding-top:16px; }
+  kbd { background:#262d3d; border:1px solid rgba(255,255,255,.2); border-bottom-width:2px; border-radius:5px; padding:0 6px; font-size:13px; }
+</style>
+</head>
+<body class="radar">
+<main>
+  <header>
+    <h1>iconic<b>pink</b>-blue · live demo</h1>
+    <span class="note">Simulation in your browser · the game itself is not here</span>
+  </header>
+  <p class="lead" style="margin-top:10px">PC keys (keyboard &amp; mouse) in place of the Xbox buttons in GTA VI's prompts.
+    Press real keys and click: the icons react the way the game's prompt code makes them react.
+    The real in-game test needs your own copy of the game; the Windows test is
+    <a href="../windows_teste.mp4">recorded here</a>.</p>
+  <nav><a href="#play">Keyboard &amp; mouse</a><a href="#types">Prompt types</a><a href="#cursor">Cursor</a>
+    <a href="#windows">Windows look</a><a href="https://github.com/neverresetbr/iconicpink-blue">GitHub</a></nav>
+
+  <section id="play">
+    <h2>1 · Press any key</h2>
+    <p class="lead">Click the scene, then try <kbd>W</kbd><kbd>A</kbd><kbd>S</kbd><kbd>D</kbd>, <kbd>Shift</kbd>, <kbd>Space</kbd>,
+      <kbd>F</kbd>, <kbd>R</kbd>, <kbd>Q</kbd>, <kbd>C</kbd>, <kbd>V</kbd>, <kbd>Tab</kbd>, <kbd>Ctrl</kbd>, the arrows, the mouse buttons and the wheel,
+      or move the mouse. Pressed icons shrink to 0.8 and switch to the pressed colours, as in the game.</p>
+    <div class="stage" id="stage" tabindex="0">
+      <div class="help">Press <span data-n="33"></span> to interact.</div>
+      <div class="pill">Hold <span data-n="33"></span> to open</div>
+      <div class="corner"><span>SELECT <span data-n="30"></span></span><span>BACK <span data-n="31"></span></span>
+        <span>ZOOM <span data-n="27"></span></span></div>
+      <div class="hint" id="stagehint">Click here first, so the keys go to the demo</div>
+    </div>
+    <div class="grid" id="grid"></div>
+  </section>
+
+  <section id="types">
+    <h2>2 · Prompt types</h2>
+    <p class="lead">The game draws, animates and tints the icons itself; only their drawing changes.
+      Values from the game's prompt code: pressed scale 0.8, colour change over 6 frames, completion glow at 50%, QTE track at 15%.</p>
+    <div class="cards">
+      <div class="card"><h3>Press</h3><div class="t">Tap <kbd>F</kbd>.</div><div class="box" id="c-press"></div><div class="st" id="s-press"></div></div>
+      <div class="card"><h3>Hold</h3><div class="t">Hold <kbd>F</kbd> until the ring is full.</div><div class="box" id="c-hold"></div><div class="st" id="s-hold"></div></div>
+      <div class="card"><h3>Mash</h3><div class="t">Tap <kbd>Space</kbd> fast; the ring falls back if you stop.</div><div class="box" id="c-mash"></div><div class="st" id="s-mash"></div></div>
+      <div class="card"><h3>Quick-time event</h3><div class="t">Press the key in the disc before the pink arc closes.</div><div class="box" id="c-qte"></div>
+        <div class="st" id="s-qte"></div><div class="row"><button id="qstart">Start</button></div></div>
+    </div>
+  </section>
+
+  <section id="cursor">
+    <h2>3 · The cursor</h2>
+    <p class="lead">This whole page is already using it. In Windows, the launcher swaps the cursor only while the game window has focus,
+      and puts the normal one back when you leave.</p>
+    <div class="curbox">
+      <div class="curshow"><img src="radar32.png" width="96" height="96" alt="Radar cursor, large">
+        <img src="radar32.png" width="32" height="32" alt=""><img src="radar32.png" width="48" height="48" alt="">
+        <img src="radar32.png" width="64" height="64" alt=""></div>
+      <div class="curtry">Move the mouse here</div>
+    </div>
+    <label class="sw"><input type="checkbox" id="curon" checked> Use the radar cursor on this page</label>
+  </section>
+
+  <section id="windows">
+    <h2>4 · The Windows look (part 2)</h2>
+    <p class="lead">A mock-up of what the launcher does on Windows: the splash from your build until the game starts drawing,
+      the game's icon on the window and the taskbar, and the cursor. Double-click the shortcut.</p>
+    <div class="win" id="win">
+      <div class="lbl">Mock-up · simulated Windows</div>
+      <div class="sc" id="sc"><img src="gta6_logo.png" alt="">Grand Theft<br>Auto VI</div>
+      <div class="gw" id="gw"><div class="tb"><img src="gta6_logo.png" alt=""><span id="gtitle">Grand Theft Auto VI</span><span class="ctl">–□✕</span></div>
+        <div class="content" id="gcontent">loading…</div></div>
+      <div class="sp" id="sp"></div>
+      <div class="at" id="at"><div><p><img src="gta6_logo.png" alt="">Grand Theft Auto VI</p><span></span></div></div>
+      <div class="task"><i style="background:#9fb4c8"></i><i style="background:#e8b84a"></i><span class="g" id="tg"><img src="gta6_logo.png" alt=""></span>
+        <i style="background:#6fbf73"></i><i style="background:#c05ce0"></i></div>
+    </div>
+    <div class="row"><button id="wrun">Open the shortcut</button><button id="walt">Alt+Tab</button><button id="wreset">Reset</button></div>
+  </section>
+
+  <footer>
+    Part of <a href="https://github.com/neverresetbr/iconicpink-blue">iconicpink-blue</a> (part 1: the in-game key icons; part 2: the Windows look).
+    Everything here is a simulation. The key letters use the game's interface typeface, as images; the cover art and the logo
+    are shown for illustration. GTA VI, its art and its logo belong to Rockstar Games; this is an unofficial fan project.
+  </footer>
+</main>
+<script>
+const DATA = {"names": {"30": ["Shift", "A"], "31": ["R", "B"], "32": ["Space", "X"], "33": ["F", "Y"], "34": ["Tab", "LB"], "35": ["Right click", "LT"], "36": ["Q", "RB"], "37": ["Left click", "RT"], "38": ["Esc", "Menu"], "39": ["V", "View"], "16": ["Ctrl", "L3"], "25": ["C", "R3"], "12": ["W", "L stick up"], "13": ["S", "L stick down"], "14": ["A", "L stick left"], "15": ["D", "L stick right"], "17": ["WASD", "L stick"], "18": ["W / S", "L stick up/down"], "19": ["A / D", "L stick left/right"], "20": ["WASD", "L stick rotate"], "58": ["WASD", "L stick rotate (alt)"], "4": ["↑", "D-pad up"], "5": ["↓", "D-pad down"], "6": ["←", "D-pad left"], "7": ["→", "D-pad right"], "8": ["Arrow keys", "D-pad"], "9": ["Arrow keys (all)", "D-pad (all)"], "10": ["↑ / ↓", "D-pad up/down"], "11": ["← / →", "D-pad left/right"], "26": ["Mouse", "R stick"], "21": ["Mouse ↑", "R stick up"], "22": ["Mouse ↓", "R stick down"], "23": ["Mouse ←", "R stick left"], "24": ["Mouse →", "R stick right"], "27": ["Mouse ↑ / ↓", "R stick up/down"], "28": ["Mouse ← / →", "R stick left/right"], "29": ["Move the mouse", "R stick rotate"], "59": ["Move the mouse", "R stick rotate (alt)"]}, "groups": [["Keys", [33, 31, 36, 39, 25, 12, 14, 13, 15]], ["Wide keys", [30, 32, 34, 38, 16]], ["Arrow keys", [4, 5, 6, 7, 8, 9, 10, 11]], ["WASD", [17, 18, 19, 20, 58]], ["Mouse", [26, 37, 35, 21, 22, 23, 24, 27, 28, 29, 59]]], "rings": {"4": "M32.00 -7.00 H50.50 A20.5 20.5 0 0 1 71.00 13.50 V50.50 A20.5 20.5 0 0 1 50.50 71.00 H13.50 A20.5 20.5 0 0 1 -7.00 50.50 V13.50 A20.5 20.5 0 0 1 13.50 -7.00 Z", "5": "M32.00 -7.00 H50.50 A20.5 20.5 0 0 1 71.00 13.50 V50.50 A20.5 20.5 0 0 1 50.50 71.00 H13.50 A20.5 20.5 0 0 1 -7.00 50.50 V13.50 A20.5 20.5 0 0 1 13.50 -7.00 Z", "6": "M32.00 -7.00 H50.50 A20.5 20.5 0 0 1 71.00 13.50 V50.50 A20.5 20.5 0 0 1 50.50 71.00 H13.50 A20.5 20.5 0 0 1 -7.00 50.50 V13.50 A20.5 20.5 0 0 1 13.50 -7.00 Z", "7": "M32.00 -7.00 H50.50 A20.5 20.5 0 0 1 71.00 13.50 V50.50 A20.5 20.5 0 0 1 50.50 71.00 H13.50 A20.5 20.5 0 0 1 -7.00 50.50 V13.50 A20.5 20.5 0 0 1 13.50 -7.00 Z", "8": "M32.00 -0.50 H60.00 A17 17 0 0 1 77.00 16.50 V47.50 A17 17 0 0 1 60.00 64.50 H4.00 A17 17 0 0 1 -13.00 47.50 V16.50 A17 17 0 0 1 4.00 -0.50 Z", "9": "M32.00 -0.50 H60.00 A17 17 0 0 1 77.00 16.50 V47.50 A17 17 0 0 1 60.00 64.50 H4.00 A17 17 0 0 1 -13.00 47.50 V16.50 A17 17 0 0 1 4.00 -0.50 Z", "10": "M32.00 -0.50 H60.00 A17 17 0 0 1 77.00 16.50 V47.50 A17 17 0 0 1 60.00 64.50 H4.00 A17 17 0 0 1 -13.00 47.50 V16.50 A17 17 0 0 1 4.00 -0.50 Z", "11": "M32.00 -0.50 H60.00 A17 17 0 0 1 77.00 16.50 V47.50 A17 17 0 0 1 60.00 64.50 H4.00 A17 17 0 0 1 -13.00 47.50 V16.50 A17 17 0 0 1 4.00 -0.50 Z", "12": "M32.00 -7.00 H50.50 A20.5 20.5 0 0 1 71.00 13.50 V50.50 A20.5 20.5 0 0 1 50.50 71.00 H13.50 A20.5 20.5 0 0 1 -7.00 50.50 V13.50 A20.5 20.5 0 0 1 13.50 -7.00 Z", "13": "M32.00 -7.00 H50.50 A20.5 20.5 0 0 1 71.00 13.50 V50.50 A20.5 20.5 0 0 1 50.50 71.00 H13.50 A20.5 20.5 0 0 1 -7.00 50.50 V13.50 A20.5 20.5 0 0 1 13.50 -7.00 Z", "14": "M32.00 -7.00 H50.50 A20.5 20.5 0 0 1 71.00 13.50 V50.50 A20.5 20.5 0 0 1 50.50 71.00 H13.50 A20.5 20.5 0 0 1 -7.00 50.50 V13.50 A20.5 20.5 0 0 1 13.50 -7.00 Z", "15": "M32.00 -7.00 H50.50 A20.5 20.5 0 0 1 71.00 13.50 V50.50 A20.5 20.5 0 0 1 50.50 71.00 H13.50 A20.5 20.5 0 0 1 -7.00 50.50 V13.50 A20.5 20.5 0 0 1 13.50 -7.00 Z", "16": "M32.00 1.00 H53.50 A17.5 17.5 0 0 1 71.00 18.50 V45.50 A17.5 17.5 0 0 1 53.50 63.00 H10.50 A17.5 17.5 0 0 1 -7.00 45.50 V18.50 A17.5 17.5 0 0 1 10.50 1.00 Z", "17": "M32.00 -0.50 H60.00 A17 17 0 0 1 77.00 16.50 V47.50 A17 17 0 0 1 60.00 64.50 H4.00 A17 17 0 0 1 -13.00 47.50 V16.50 A17 17 0 0 1 4.00 -0.50 Z", "18": "M32.00 -0.50 H60.00 A17 17 0 0 1 77.00 16.50 V47.50 A17 17 0 0 1 60.00 64.50 H4.00 A17 17 0 0 1 -13.00 47.50 V16.50 A17 17 0 0 1 4.00 -0.50 Z", "19": "M32.00 -0.50 H60.00 A17 17 0 0 1 77.00 16.50 V47.50 A17 17 0 0 1 60.00 64.50 H4.00 A17 17 0 0 1 -13.00 47.50 V16.50 A17 17 0 0 1 4.00 -0.50 Z", "20": "M32.00 -0.50 H60.00 A17 17 0 0 1 77.00 16.50 V47.50 A17 17 0 0 1 60.00 64.50 H4.00 A17 17 0 0 1 -13.00 47.50 V16.50 A17 17 0 0 1 4.00 -0.50 Z", "21": "M32.00 -21.45 H42.80 A17 17 0 0 1 59.80 -4.45 V54.05 A17 17 0 0 1 42.80 71.05 H21.20 A17 17 0 0 1 4.20 54.05 V-4.45 A17 17 0 0 1 21.20 -21.45 Z", "22": "M32.00 -7.05 H42.80 A17 17 0 0 1 59.80 9.95 V68.45 A17 17 0 0 1 42.80 85.45 H21.20 A17 17 0 0 1 4.20 68.45 V9.95 A17 17 0 0 1 21.20 -7.05 Z", "23": "M24.80 -7.00 H42.85 A17 17 0 0 1 59.85 10.00 V54.00 A17 17 0 0 1 42.85 71.00 H6.75 A17 17 0 0 1 -10.25 54.00 V10.00 A17 17 0 0 1 6.75 -7.00 Z", "24": "M39.20 -7.00 H57.25 A17 17 0 0 1 74.25 10.00 V54.00 A17 17 0 0 1 57.25 71.00 H21.15 A17 17 0 0 1 4.15 54.00 V10.00 A17 17 0 0 1 21.15 -7.00 Z", "25": "M32.00 -7.00 H50.50 A20.5 20.5 0 0 1 71.00 13.50 V50.50 A20.5 20.5 0 0 1 50.50 71.00 H13.50 A20.5 20.5 0 0 1 -7.00 50.50 V13.50 A20.5 20.5 0 0 1 13.50 -7.00 Z", "26": "M32.00 -7.00 C52.05 -7.00 59.76 5.32 59.76 20.37 L59.76 47.74 C59.76 61.42 47.42 71.00 32.00 71.00 C16.58 71.00 4.24 61.42 4.24 47.74 L4.24 20.37 C4.24 5.32 11.95 -7.00 32.00 -7.00 Z", "27": "M32.00 -21.50 H42.80 A17 17 0 0 1 59.80 -4.50 V68.50 A17 17 0 0 1 42.80 85.50 H21.20 A17 17 0 0 1 4.20 68.50 V-4.50 A17 17 0 0 1 21.20 -21.50 Z", "28": "M32.00 -7.00 H57.30 A17 17 0 0 1 74.30 10.00 V54.00 A17 17 0 0 1 57.30 71.00 H6.70 A17 17 0 0 1 -10.30 54.00 V10.00 A17 17 0 0 1 6.70 -7.00 Z", "29": "M32.00 -21.50 H57.30 A17 17 0 0 1 74.30 -4.50 V68.50 A17 17 0 0 1 57.30 85.50 H6.70 A17 17 0 0 1 -10.30 68.50 V-4.50 A17 17 0 0 1 6.70 -21.50 Z", "30": "M32.00 1.00 H53.50 A17.5 17.5 0 0 1 71.00 18.50 V45.50 A17.5 17.5 0 0 1 53.50 63.00 H10.50 A17.5 17.5 0 0 1 -7.00 45.50 V18.50 A17.5 17.5 0 0 1 10.50 1.00 Z", "31": "M32.00 -7.00 H50.50 A20.5 20.5 0 0 1 71.00 13.50 V50.50 A20.5 20.5 0 0 1 50.50 71.00 H13.50 A20.5 20.5 0 0 1 -7.00 50.50 V13.50 A20.5 20.5 0 0 1 13.50 -7.00 Z", "32": "M32.00 1.00 H53.50 A17.5 17.5 0 0 1 71.00 18.50 V45.50 A17.5 17.5 0 0 1 53.50 63.00 H10.50 A17.5 17.5 0 0 1 -7.00 45.50 V18.50 A17.5 17.5 0 0 1 10.50 1.00 Z", "33": "M32.00 -7.00 H50.50 A20.5 20.5 0 0 1 71.00 13.50 V50.50 A20.5 20.5 0 0 1 50.50 71.00 H13.50 A20.5 20.5 0 0 1 -7.00 50.50 V13.50 A20.5 20.5 0 0 1 13.50 -7.00 Z", "34": "M32.00 1.00 H53.50 A17.5 17.5 0 0 1 71.00 18.50 V45.50 A17.5 17.5 0 0 1 53.50 63.00 H10.50 A17.5 17.5 0 0 1 -7.00 45.50 V18.50 A17.5 17.5 0 0 1 10.50 1.00 Z", "35": "M32.00 -7.00 C52.05 -7.00 59.76 5.32 59.76 20.37 L59.76 47.74 C59.76 61.42 47.42 71.00 32.00 71.00 C16.58 71.00 4.24 61.42 4.24 47.74 L4.24 20.37 C4.24 5.32 11.95 -7.00 32.00 -7.00 Z", "36": "M32.00 -7.00 H50.50 A20.5 20.5 0 0 1 71.00 13.50 V50.50 A20.5 20.5 0 0 1 50.50 71.00 H13.50 A20.5 20.5 0 0 1 -7.00 50.50 V13.50 A20.5 20.5 0 0 1 13.50 -7.00 Z", "37": "M32.00 -7.00 C52.05 -7.00 59.76 5.32 59.76 20.37 L59.76 47.74 C59.76 61.42 47.42 71.00 32.00 71.00 C16.58 71.00 4.24 61.42 4.24 47.74 L4.24 20.37 C4.24 5.32 11.95 -7.00 32.00 -7.00 Z", "38": "M32.00 1.00 H53.50 A17.5 17.5 0 0 1 71.00 18.50 V45.50 A17.5 17.5 0 0 1 53.50 63.00 H10.50 A17.5 17.5 0 0 1 -7.00 45.50 V18.50 A17.5 17.5 0 0 1 10.50 1.00 Z", "39": "M32.00 -7.00 H50.50 A20.5 20.5 0 0 1 71.00 13.50 V50.50 A20.5 20.5 0 0 1 50.50 71.00 H13.50 A20.5 20.5 0 0 1 -7.00 50.50 V13.50 A20.5 20.5 0 0 1 13.50 -7.00 Z", "58": "M32.00 -0.50 H60.00 A17 17 0 0 1 77.00 16.50 V47.50 A17 17 0 0 1 60.00 64.50 H4.00 A17 17 0 0 1 -13.00 47.50 V16.50 A17 17 0 0 1 4.00 -0.50 Z", "59": "M32.00 -21.50 H57.30 A17 17 0 0 1 74.30 -4.50 V68.50 A17 17 0 0 1 57.30 85.50 H6.70 A17 17 0 0 1 -10.30 68.50 V-4.50 A17 17 0 0 1 6.70 -21.50 Z"}};
+const NAMES = DATA.names, RINGS = DATA.rings;
+const src = (n, p) => "keys/" + String(n).padStart(2, "0") + (p ? "_p" : "") + ".png";
+
+/* ícone: <span class="ic"><img></span>, com anel opcional */
+function icon(n, size, ring) {
+  const el = document.createElement("span"); el.className = "ic"; el.style.setProperty("--s", size + "px");
+  const img = new Image(); img.src = src(n); img.alt = NAMES[n][0]; el.appendChild(img);
+  let arc = null, glow = null;
+  if (ring) {
+    el.insertAdjacentHTML("beforeend", '<svg class="ring" viewBox="-16 -16 96 96"><path class="tr" fill="none" stroke="rgba(255,255,255,.15)" stroke-width="3"/>' +
+      '<path class="gl" fill="none" stroke="#fff" stroke-width="6" opacity="0"/><path class="ar" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round"/></svg>');
+    for (const p of el.querySelectorAll("path")) p.setAttribute("d", RINGS[n]);
+    arc = el.querySelector(".ar"); glow = el.querySelector(".gl");
+    const L = arc.getTotalLength ? 0 : 0;
+  }
+  const o = { el, img, n, arc, glow, on: false };
+  o.press = (v) => { if (o.on === v) return; o.on = v; el.classList.toggle("on", v); img.src = src(n, v); };
+  o.ring = (k, color) => { if (!arc) return; const L = arc.getTotalLength(); arc.style.strokeDasharray = L;
+    arc.style.strokeDashoffset = L * (1 - Math.max(0, Math.min(1, k))); arc.setAttribute("stroke", color || "#fff");
+    arc.style.opacity = k > 0 ? 1 : 0; };
+  o.glow = (k) => { if (glow) glow.setAttribute("opacity", (0.5 * k).toFixed(3)); };
+  return o;
+}
+/* pré-carrega as versões apertadas */
+for (const n of Object.keys(NAMES)) { new Image().src = src(n, true); }
+
+/* ---------- 1. palco + grade ---------- */
+const all = {};                       /* n -> lista de ícones na página */
+function reg(o) { (all[o.n] = all[o.n] || []).push(o); return o; }
+document.querySelectorAll("#stage [data-n]").forEach(s => { const o = reg(icon(+s.dataset.n, 30)); s.replaceWith(o.el); });
+const grid = document.getElementById("grid");
+for (const [title, ns] of DATA.groups) {
+  const g = document.createElement("div"); g.className = "gtitle"; g.textContent = title; grid.appendChild(g);
+  for (const n of ns) {
+    const c = document.createElement("div"); c.className = "cell";
+    const o = reg(icon(n, 56)); o.cell = c; c.appendChild(o.el);
+    c.insertAdjacentHTML("beforeend", '<div class="k">' + NAMES[n][0] + '</div><div class="x">was Xbox ' + NAMES[n][1] + '</div>');
+    grid.appendChild(c);
+  }
+}
+const KEYS = { KeyW:[12,17,18,20,58], KeyS:[13,17,18,20,58], KeyA:[14,17,19,20,58], KeyD:[15,17,19,20,58],
+  ShiftLeft:[30], ShiftRight:[30], Space:[32], KeyF:[33], KeyR:[31], KeyQ:[36], KeyV:[39], KeyC:[25], Tab:[34],
+  Escape:[38], ControlLeft:[16], ControlRight:[16], ArrowUp:[4,9,10], ArrowDown:[5,9,10], ArrowLeft:[6,9,11], ArrowRight:[7,9,11] };
+const MOUSE = { 0:[37], 1:[26], 2:[35] };
+const held = new Map();               /* origem -> lista de n */
+function refresh() {
+  const on = new Set(); for (const l of held.values()) for (const n of l) on.add(n);
+  for (const n in all) for (const o of all[n]) { o.press(on.has(+n)); if (o.cell) o.cell.classList.toggle("on", on.has(+n)); }
+}
+function down(id, ns) { held.set(id, ns); refresh(); }
+function up(id) { held.delete(id); refresh(); }
+function flash(id, ns, ms) { down(id, ns); clearTimeout(flash[id]); flash[id] = setTimeout(() => up(id), ms); }
+const stage = document.getElementById("stage");
+stage.addEventListener("focus", () => document.getElementById("stagehint").textContent = "Keys and mouse now go to the demo");
+stage.addEventListener("blur", () => document.getElementById("stagehint").textContent = "Click here first, so the keys go to the demo");
+const capture = new Set(["Tab", "Space", "ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight"]);
+document.addEventListener("keydown", (e) => {
+  if (e.repeat) { if (capture.has(e.code) && document.activeElement === stage) e.preventDefault(); return; }
+  if (KEYS[e.code]) { down("k" + e.code, KEYS[e.code]); if (capture.has(e.code) && document.activeElement === stage) e.preventDefault(); }
+  bus.emit("down", e.code);
+});
+document.addEventListener("keyup", (e) => { if (KEYS[e.code]) up("k" + e.code); bus.emit("up", e.code); });
+window.addEventListener("blur", () => { held.clear(); refresh(); });
+stage.addEventListener("mousedown", (e) => { stage.focus(); if (MOUSE[e.button]) down("m" + e.button, MOUSE[e.button]); bus.emit("down", "Mouse" + e.button); });
+document.addEventListener("mouseup", (e) => { up("m" + e.button); bus.emit("up", "Mouse" + e.button); });
+stage.addEventListener("contextmenu", (e) => e.preventDefault());
+stage.addEventListener("wheel", (e) => { e.preventDefault(); flash("wheel", [26, 27], 220); }, { passive: false });
+let acc = [0, 0];
+stage.addEventListener("mousemove", (e) => {
+  acc[0] += e.movementX; acc[1] += e.movementY;
+  if (Math.hypot(acc[0], acc[1]) < 14) return;
+  const h = Math.abs(acc[0]) > Math.abs(acc[1]);
+  const ns = h ? (acc[0] > 0 ? [24, 28] : [23, 28]) : (acc[1] > 0 ? [22, 27] : [21, 27]);
+  flash("move", ns.concat([29, 59]), 160); acc = [0, 0];
+});
+
+/* barramento simples para os cartões */
+const bus = { h: {}, on(t, f) { (this.h[t] = this.h[t] || []).push(f); }, emit(t, c) { (this.h[t] || []).forEach(f => f(c)); } };
+
+/* ---------- 2. tipos de prompt ---------- */
+function place(id, n, size) { const o = icon(n, size || 72, true); document.getElementById(id).appendChild(o.el); return o; }
+const st = (id, s) => document.getElementById(id).textContent = s;
+/* apertar */
+const pr = place("c-press", 33); let presses = 0;
+bus.on("down", c => { if (c === "KeyF") { pr.press(true); st("s-press", "pressed " + (++presses) + "×"); } });
+bus.on("up", c => { if (c === "KeyF") pr.press(false); });
+/* segurar */
+const ho = place("c-hold", 33); let hStart = 0, hDone = 0;
+bus.on("down", c => { if (c === "KeyF") { hStart = performance.now(); hDone = 0; ho.press(true); } });
+bus.on("up", c => { if (c === "KeyF") { hStart = 0; ho.press(false); } });
+/* repetido */
+const ma = place("c-mash", 32); let mash = 0, mDone = 0;
+bus.on("down", c => { if (c === "Space" && !mDone) { mash = Math.min(1, mash + 0.12); ma.press(true); setTimeout(() => ma.press(false), 90);
+  if (mash >= 1) { mDone = performance.now(); st("s-mash", "done!"); } } });
+/* QTE */
+const qbox = document.getElementById("c-qte");
+qbox.innerHTML = '<svg viewBox="0 0 150 150" style="position:absolute;width:150px;height:150px;overflow:visible">' +
+  '<circle cx="75" cy="75" r="50" fill="rgba(0,0,0,.70)"/><circle cx="75" cy="75" r="58" fill="none" stroke="rgba(255,255,255,.15)" stroke-width="5"/>' +
+  '<circle id="qa" cx="75" cy="75" r="58" fill="none" stroke="rgb(237,84,153)" stroke-width="5" transform="rotate(-90 75 75)"/>' +
+  '<circle id="qok" cx="75" cy="75" r="58" fill="none" stroke="#fff" stroke-width="3" opacity="0"/></svg>';
+const QK = [["KeyF", 33], ["KeyR", 31], ["KeyQ", 36], ["Space", 32], ["ShiftLeft", 30], ["Mouse0", 37]];
+let q = null, score = 0, tries = 0, qIcon = null, qOk = 0;
+const qa = document.getElementById("qa"), qok = document.getElementById("qok"), QC = 2 * Math.PI * 58;
+qa.style.strokeDasharray = QC; qa.style.strokeDashoffset = QC;
+function qNext() {
+  const [code, n] = QK[Math.floor(Math.random() * QK.length)];
+  if (qIcon) qIcon.el.remove();
+  qIcon = icon(n, 52); qIcon.el.style.position = "absolute"; qbox.appendChild(qIcon.el);
+  q = { code, t0: performance.now(), dur: 1500 };
+}
+document.getElementById("qstart").onclick = () => { score = 0; tries = 0; st("s-qte", "go!"); qNext(); qbox.focus(); };
+qbox.addEventListener("mousedown", () => bus.emit("down", "Mouse0"));
+bus.on("down", c => {
+  if (!q) return;
+  const hit = c === q.code || (q.code === "ShiftLeft" && c === "ShiftRight");
+  if (!hit && !(c in KEYS) && !c.startsWith("Mouse")) return;
+  tries++; if (hit) { score++; qOk = performance.now(); qIcon.press(true); }
+  st("s-qte", (hit ? "hit! " : "missed · ") + score + " / " + tries);
+  q = null; setTimeout(() => { if (tries < 10) qNext(); else { st("s-qte", "score " + score + " / 10 · press Start to play again"); if (qIcon) qIcon.el.remove(); qIcon = null; } }, 450);
+});
+/* laço de animação */
+let last = 0;
+function tick(now) {
+  const dt = last ? Math.min(0.1, (now - last) / 1000) : 0; last = now;
+  if (hStart) { const k = Math.min(1, (now - hStart) / 1000); ho.ring(k); if (k >= 1 && !hDone) { hDone = now; st("s-hold", "done!"); } }
+  else if (!hDone) { ho.ring(0); st("s-hold", ""); }
+  ho.glow(hDone ? Math.max(0, 1 - (now - hDone) / 600) : 0);
+  if (hDone && !hStart && now - hDone > 700) { hDone = 0; ho.ring(0); }
+  if (!mDone) mash = Math.max(0, mash - 0.35 * dt);     /* volta devagar se você parar */
+  ma.ring(mash, "rgb(237,84,153)");
+  ma.glow(mDone ? Math.max(0, 1 - (now - mDone) / 600) : 0);
+  if (mDone && now - mDone > 900) { mDone = 0; mash = 0; st("s-mash", ""); }
+  if (q) { const p = (now - q.t0) / q.dur; qa.style.strokeDashoffset = QC * (1 - Math.min(1, p)); qa.style.opacity = 1;
+    if (p >= 1) { tries++; st("s-qte", "too late · " + score + " / " + tries); q = null;
+      setTimeout(() => { if (tries < 10) qNext(); else { st("s-qte", "score " + score + " / 10 · press Start to play again"); if (qIcon) qIcon.el.remove(); qIcon = null; } }, 450); } }
+  else qa.style.opacity = 0;
+  const g = qOk ? (now - qOk) / 500 : 1; qok.setAttribute("r", 58 + 24 * Math.min(1, g)); qok.setAttribute("opacity", g < 1 ? (1 - g).toFixed(3) : 0);
+  requestAnimationFrame(tick);
+}
+requestAnimationFrame(tick);
+
+/* ---------- 3. cursor ---------- */
+document.getElementById("curon").onchange = (e) => document.body.classList.toggle("radar", e.target.checked);
+
+/* ---------- 4. Windows ---------- */
+const $ = (id) => document.getElementById(id);
+let timers = [];
+function wreset() { timers.forEach(clearTimeout); timers = [];
+  ["gw", "sp", "tg", "at"].forEach(i => $(i).classList.remove("show")); $("gcontent").classList.remove("draw");
+  $("gcontent").textContent = "loading…"; $("gtitle").textContent = "Grand Theft Auto VI"; $("sc").classList.remove("sel");
+  $("win").classList.remove("radar"); }
+function wrun() { wreset(); const T = (ms, f) => timers.push(setTimeout(f, ms));
+  $("sc").classList.add("sel");
+  T(300, () => $("sp").classList.add("show"));
+  T(1100, () => { $("gw").classList.add("show"); $("tg").classList.add("show"); $("win").classList.add("radar"); });
+  T(3600, () => { $("gtitle").textContent = "Grand Theft Auto VI | VIctory 30 fps 33.3 ms/frame"; $("sp").classList.remove("show"); });
+  T(3900, () => { $("gcontent").classList.add("draw"); $("gcontent").textContent = ""; $("sc").classList.remove("sel"); }); }
+$("sc").addEventListener("dblclick", wrun); $("wrun").onclick = wrun; $("wreset").onclick = wreset;
+$("walt").onclick = () => { if (!$("gw").classList.contains("show")) return; $("at").classList.add("show");
+  timers.push(setTimeout(() => $("at").classList.remove("show"), 1400)); };
+</script>
+</body>
+</html>
