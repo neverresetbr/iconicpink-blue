@@ -2,6 +2,15 @@
 
 <p><a href="README.md">English</a> · <b>Português (BR)</b></p>
 
+<p align="center">
+  <img src="../docs/windows_cartaz.jpg" alt="Tudo o que a parte 2 muda no Windows (simulação)" width="100%">
+</p>
+
+> [!NOTE]
+> A imagem acima e o [vídeo animado](../docs/windows_demo.mp4) são **simulações** do Windows,
+> feitas para mostrar tudo de uma vez. O **teste real**, gravado no Windows 11, é o
+> [windows_teste.mp4](../docs/windows_teste.mp4) (veja "Teste" abaixo).
+
 Um **lançador** que abre o jogo pelo programa que você já usa e cuida só do
 visual. Ele faz três coisas:
 

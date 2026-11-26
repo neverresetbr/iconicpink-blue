@@ -166,6 +166,12 @@ de tarefas e, se quiser, um cursor próprio, sem mudar nenhuma linha do
 VIctory nem dos forks (VIctory, Belobug, avatarmanz e DexNom). Veja
 [windows/](windows/README.pt-BR.md).
 
+<p align="center">
+  <a href="windows/README.pt-BR.md"><img src="docs/windows_cartaz.jpg" alt="Parte 2: o visual do Windows (simulação)" width="100%"></a>
+</p>
+
+<sub>Simulação. O teste real gravado no Windows 11: <a href="docs/windows_teste.mp4">docs/windows_teste.mp4</a>.</sub>
+
 ## Estrutura
 
 ```

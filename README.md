@@ -166,6 +166,12 @@ taskbar and, if you want, a custom cursor, without changing a line of
 VIctory or its forks (VIctory, Belobug, avatarmanz and DexNom). See
 [windows/](windows/README.md).
 
+<p align="center">
+  <a href="windows/README.md"><img src="docs/windows_cartaz.jpg" alt="Part 2: the Windows look (mock-up)" width="100%"></a>
+</p>
+
+<sub>Mock-up. The real test recorded on Windows 11: <a href="docs/windows_teste.mp4">docs/windows_teste.mp4</a>.</sub>
+
 ## Layout
 
 ```

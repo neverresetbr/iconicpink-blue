@@ -2,6 +2,15 @@
 
 <p><b>English</b> · <a href="README.pt-BR.md">Português (BR)</a></p>
 
+<p align="center">
+  <img src="../docs/windows_cartaz.jpg" alt="Everything part 2 changes on Windows (mock-up)" width="100%">
+</p>
+
+> [!NOTE]
+> The image above and the [animated video](../docs/windows_demo.mp4) are **mock-ups** of
+> Windows, made to show everything at once. The **real test**, recorded on Windows 11, is
+> [windows_teste.mp4](../docs/windows_teste.mp4) (see "Test" below).
+
 A **launcher** that opens the game through the program you already use and
 only takes care of the look. It does three things:
 
